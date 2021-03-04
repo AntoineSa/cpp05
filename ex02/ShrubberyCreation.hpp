@@ -6,7 +6,7 @@
 /*   By: asablayr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/21 10:36:57 by asablayr          #+#    #+#             */
-/*   Updated: 2021/02/24 19:40:50 by asablayr         ###   ########.fr       */
+/*   Updated: 2021/03/04 14:14:27 by asablayr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,21 @@
 #include <fstream>
 #include "Form.hpp"
 
-#define ASCII_TREE "-|-"
+#define ASCII_TREE "                                                         .\n                                              .         ;\n                 .              .              ;%     ;;\n                   ,           ,                :;%  %;\n                    :         ;                   :;%;'     .,\n           ,.        %;     %;            ;        %;'    ,;\n             ;       ;%;  %%;        ,     %;    ;%;    ,%'\n              %;       %;%;      ,  ;       %;  ;%;   ,%;'\n               ;%;      %;        ;%;        % ;%;  ,%;'\n                `%;.     ;%;     %;'         `;%%;.%;'\n                 `:;%.    ;%%. %@;        %; ;@%;%'\n                    `:%;.  :;bd%;          %;@%;'\n                      `@%:.  :;%.         ;@@%;'\n                        `@%.  `;@%.      ;@@%;\n                          `@%%. `@%%    ;@@%;\n                            ;@%. :@%%  %@@%;\n                              %@bd%%%bd%%:;\n                                #@%%%%%:;;\n                                %@@%%%::;\n                                %@@@%(o);  . '\n                                %@@@o%;:(.,'\n                            `.. %@@@o%::;\n                               `)@@@o%::;\n                                %@@(o)::;\n                               .%@@@@%::;\n                               ;%@@@@%::;.\n                              ;%@@@@%%:;;;.\n                          ...;%@@@@@%%:;;;;,.."
+
 #define BOT_RANK 150
 
 class Shrubbery : public Form
 {
 	public:
-			Shrubbery(std::string const &name);
+			Shrubbery(std::string name);
 			Shrubbery(Shrubbery const &);
 			Shrubbery& operator = (Shrubbery const &);
 			~Shrubbery();
 
-			void action();
+			virtual void execute(Bureaucrat const &executor) const;
 
 	private:
 };
-
-std::ostream& operator << (std::ostream &out, const Shrubbery &);
 
 #endif

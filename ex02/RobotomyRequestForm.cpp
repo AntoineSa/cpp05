@@ -6,7 +6,7 @@
 /*   By: asablayr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/21 10:49:11 by asablayr          #+#    #+#             */
-/*   Updated: 2021/02/25 11:00:41 by asablayr         ###   ########.fr       */
+/*   Updated: 2021/03/04 14:58:41 by asablayr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,38 @@
 #include <iostream>
 #include <fstream>
 
-RobotomyRequestForm::RobotomyRequestForm(std::string const& name): Form(name, 72, 45)
+RobotomyRequestForm::RobotomyRequestForm(std::string name): Form(name, 72, 45)
 {
-	std::cout << "naissance d'un RobotomyRequestForm\n";
+	std::cout << "creation du RobotomyRequestForm : " << getName() << "\n";
 }
 
-RobotomyRequestForm::RobotomyRequestForm(Shrubbery const& copy): Form(copy.getName(), copy.getSignRank(), copy.getExeRank())
+RobotomyRequestForm::RobotomyRequestForm(RobotomyRequestForm const& copy): Form(copy.getName(), copy.getSignRank(), copy.getExeRank())
 {
 	std::cout << "naissance par copie d'un RobotomyRequestForm\n";
 }
 
-RobotomyRequestForm& RobotomyRequestForm::operator = (Shrubbery const & copy)
+RobotomyRequestForm& RobotomyRequestForm::operator = (RobotomyRequestForm const & copy)
 {
-	_check = copy.getCheck();
+	if(copy.getCheck())
+		setCheck();
 	std::cout << "copy d'un RobotomyRequestForm\n";
 	return (*this);
 }
 
 RobotomyRequestForm::~RobotomyRequestForm()
 {
-	std::cout << "destruction du RobotomyRequestForm " << _name << std::endl;
+	std::cout << "destruction du RobotomyRequestForm " << getName() << std::endl;
 }
 
-void RobotomyRequestForm::action()
+void RobotomyRequestForm::execute(Bureaucrat const& executor) const
 {
-	std::cout << "rattling noise of screws\n";
-}
-
-std::ostream& operator << (std::ostream &out, const RobotomyRequestForm &form)
-{
-	if (form.getCheck())
-		out << " of grade ";
-	else
-		out << " of grade ";
-	return (out);
+	try
+	{
+		Form::execute(executor);
+	}
+	catch (std::exception& e)
+	{
+		throw e;
+	}
+	std::cout << "** rattling noise of screws **\t" << executor.getName() << " has been robotomized\n";
 }

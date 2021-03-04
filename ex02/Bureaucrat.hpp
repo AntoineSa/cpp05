@@ -6,7 +6,7 @@
 /*   By: asablayr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/21 10:36:57 by asablayr          #+#    #+#             */
-/*   Updated: 2021/02/24 12:26:43 by asablayr         ###   ########.fr       */
+/*   Updated: 2021/03/04 14:19:34 by asablayr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ class Bureaucrat
 			void incrementGrade();
 			void decrementGrade();
 			void signForm(Form & form) const;
+			void executeForm(Form const&) const;
 
 	private:
 			std::string const& _name;

@@ -6,7 +6,7 @@
 /*   By: asablayr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/21 10:49:11 by asablayr          #+#    #+#             */
-/*   Updated: 2021/02/24 14:32:48 by asablayr         ###   ########.fr       */
+/*   Updated: 2021/03/04 14:37:13 by asablayr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void Form::beSigned(Bureaucrat const &bureaucrat)
 	else
 	{
 		_check = true;
-		std::cout << _name << " has signed the form\n";
+		std::cout << bureaucrat.getName() << " has signed the form\n";
 	}
 }
 

@@ -6,17 +6,18 @@
 /*   By: asablayr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/21 10:49:11 by asablayr          #+#    #+#             */
-/*   Updated: 2021/02/24 18:59:36 by asablayr         ###   ########.fr       */
+/*   Updated: 2021/03/04 14:28:51 by asablayr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ShrubberyCreation.hpp"
 #include <iostream>
 #include <fstream>
+#include <string>
 
-Shrubbery::Shrubbery(std::string const& name): Form(name + "_shrubbery", 145, 137)
+Shrubbery::Shrubbery(std::string name): Form(name, 145, 137)
 {
-	std::cout << "naissance d'un Shrubbery\n";
+	std::cout << "naissance du Shrubbery : '" << getName() << "'\n";
 }
 
 Shrubbery::Shrubbery(Shrubbery const& copy): Form(copy.getName(), copy.getSignRank(), copy.getExeRank())
@@ -26,29 +27,24 @@ Shrubbery::Shrubbery(Shrubbery const& copy): Form(copy.getName(), copy.getSignRa
 
 Shrubbery& Shrubbery::operator = (Shrubbery const & copy)
 {
-	_check = copy.getCheck();
+	if (copy.getCheck())
+		setCheck();
 	std::cout << "copy d'un Shrubbery\n";
 	return (*this);
 }
 
 Shrubbery::~Shrubbery()
 {
-	std::cout << "destruction du Shrubbery " << _name << std::endl;
+	std::cout << "destruction du Shrubbery " << getName() << std::endl;
 }
 
-void Shrubbery::action()
+void Shrubbery::execute(Bureaucrat const& executor) const
 {
+	Form::execute(executor);
 	std::ofstream file;
-	file.open(_name.c_str());
+	std::string tmp = getName() + "_shrubbery";
+	file.open(tmp.c_str());
 	file << ASCII_TREE;
 	file.close();
-}
-
-std::ostream& operator << (std::ostream &out, const Shrubbery &form)
-{
-	if (form.getCheck())
-		out << " of grade ";
-	else
-		out << " of grade ";
-	return (out);
+	std::cout << "tree planted in " << tmp << std::endl;
 }

@@ -3,56 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   Form.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asablayr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lfalkau <lfalkau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/21 10:49:11 by asablayr          #+#    #+#             */
-/*   Updated: 2021/02/24 14:32:48 by asablayr         ###   ########.fr       */
+/*   Created: 2020/01/29 06:01:48 by lfalkau           #+#    #+#             */
+/*   Updated: 2021/03/04 14:46:40 by asablayr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Form.hpp"
 #include <iostream>
 
-Form::Form(std::string const& name, unsigned int signRank, unsigned int exeRank): 
-	_name(name), _check(false), 
-	_signRank(signRank), _exeRank(exeRank)
+// Constructors && Destructor
+
+Form::Form(std::string name, unsigned int rqs, unsigned int rqe) : _name(name),  _signRank(rqs), _exeRank(rqe)
 {
-	if (_signRank < TOP_RANK || _signRank < TOP_RANK)
-		throw GradeTooLowException();
-	else if (_exeRank > BOT_RANK || _exeRank > BOT_RANK)
+	if (rqs < 1 || rqe < 1)
 		throw GradeTooHighException();
-	std::cout << "naissance d'un formulaire\n";
+	if (rqs > 150 || rqe > 150)
+		throw GradeTooLowException();
+	std::cout << "Form '" << _name << "' created\n";
 }
 
-Form::Form(Form const& copy): _name(copy.getName()), _signRank(copy.getSignRank()), _exeRank(copy.getExeRank())
+Form::Form(Form const &copied) : _name(copied._name), _signRank(copied._signRank), _exeRank(copied._exeRank)
 {
-	std::cout << "naissance par copie d'un formulaire\n";
-}
-
-Form& Form::operator = (Form const & copy)
-{
-	_check = copy.getCheck();
-	std::cout << "copy d'un formulaire\n";
-	return (*this);
+	std::cout << "Form '" << _name << "' created by copy\n";
 }
 
 Form::~Form()
 {
-	std::cout << "destruction du bureaucrate " << _name << std::endl;
+	std::cout << "Form '" << _name << "' shredded and destroyed\n";
 }
 
-void Form::beSigned(Bureaucrat const &bureaucrat)
+// Methods
+
+std::string Form::getName() const
 {
-	std::cout << bureaucrat.getName() << " is trying to sign the form : " << _name << std::endl;
-	if (_check == true)
-		throw AlreadySigned();
-	if (bureaucrat.getGrade() > _signRank)
-		throw GradeTooLowException();
-	else
-	{
+	return (_name);
+}
+
+bool Form::getCheck() const
+{
+	return (_check);
+}
+
+void Form::setCheck()
+{
+	if (!_check)
 		_check = true;
-		std::cout << _name << " has signed the form\n";
-	}
+	else
+		throw AlreadySignedException();
 }
 
 unsigned int Form::getSignRank() const
@@ -65,21 +64,31 @@ unsigned int Form::getExeRank() const
 	return (_exeRank);
 }
 
-bool Form::getCheck() const
+void Form::beSigned(Bureaucrat const &bureaucrat)
 {
-	return (_check);
-}
-
-std::string const &Form::getName() const
-{
-	return (_name);
-}
-
-std::ostream& operator << (std::ostream &out, const Form &form)
-{
-	if (form.getCheck())
-		out << form.getName() << " of grade " << form.getSignRank() << " has been signed.\n";
+	if (bureaucrat.getGrade() > _signRank)
+		throw Form::SignTooLowException();
+	else if (_check)
+		throw AlreadySignedException();
 	else
-		out << form.getName() << " of grade " << form.getSignRank() << " hasn't been signed.\n";
+		_check = true;
+}
+
+void Form::execute(Bureaucrat const &executor) const
+{
+	if (_check == false)
+		throw Form::NotSignedException();
+	else if (executor.getGrade() > getExeRank())
+		throw Form::ExeTooLowException();
+}
+
+// External stream overload
+
+std::ostream& operator << (std::ostream &out,const Form& form)
+{
+	if (form.getCheck() == true)
+		out << "Form " << form.getName() << " is signed.\n";
+	else
+		out << "Form " << form.getName() << " isn't signed. Minimal grade to sign: " << form.getSignRank() << " Minimal grade to exec: " << form.getExeRank() << ".\n";
 	return (out);
 }
